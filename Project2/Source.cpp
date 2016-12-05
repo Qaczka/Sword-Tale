@@ -443,6 +443,7 @@ int main(void)
 					pos_x = 10;
 					pos_y = (wysokosc * 3) / 4;
 					kamera_x = 0;
+					ilosc_zyc = 3;
 					break;
 				}
 			}

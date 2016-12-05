@@ -7,19 +7,20 @@
 
 enum KEYS{LEFT,RIGHT,SPACE}; //nazywaM keysy bo bedzie ciezko zapamietac z tablicy co jest czym
 
-int kolider(int x,int y,int x_obiektu,int y_obiektu,int dlugosc_x,int dlugosc_y,bool &kolider_ziemi,bool skok)
+bool kolider(int x, int y, int x_obiektu, int y_obiektu, int dlugosc_x, int dlugosc_y, bool kolider_ziemi, bool skok)
 {
 	int s_boh = 83;
 	int w_boh = 66;
 
 	//if ((!(((kolider_x + 41 > 0) && (kolider_x + 41 <= 795) && (pos_y + 15 == 825)) || ((kolider_x + 41 > 850) && (kolider_x + 41 < 795 + 850) && (pos_y + 15 == 825)) || (skok == true))))
 
-	if (!((((x + (s_boh/2)) >= x_obiektu) && (x + (s_boh/2) <= (x_obiektu+dlugosc_x)) &&  (y<=(y_obiektu+dlugosc_y)))||(skok==true)))
+	if (!((((x + (s_boh / 2)) >= x_obiektu) && (x + (s_boh / 2) <= (x_obiektu + dlugosc_x)) && (y <= (y_obiektu + dlugosc_y))) || (skok == true)))
 	{
 		kolider_ziemi = true;
 	}
 	return kolider_ziemi;
 }
+
 
 
 int main(void)
@@ -280,18 +281,15 @@ int main(void)
 					skok = false;
 				}
 			}
-/*
+
 			if ((!(((kolider_x + 41 > 0) && (kolider_x + 41 <= 795) && (pos_y+15==825)) 
 			|| ((kolider_x + 41 > 850) && (kolider_x + 41 < 795 + 850) && (pos_y + 15 == 825)) 
 			|| (skok==true))))
 			{
 				pos_y += 20;
 			}
-*/
-			kolider_ziemi=kolider(kolider_x, pos_y, 0, 810, 795, 182, kolider_ziemi, skok);
-			kolider_ziemi=kolider(kolider_x, pos_y, 850, 810, 795, 182, kolider_ziemi, skok);
-
-			//kolider(kolider_x, pos_y, 850, 810, 795, 182,kolider_ziemi);
+	
+			
 
 			if (kolider_ziemi == true)
 			{
