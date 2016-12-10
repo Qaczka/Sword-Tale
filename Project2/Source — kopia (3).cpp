@@ -332,12 +332,11 @@ int main(void)
 					grawitacja -= 1;
 					skok = true;
 
-					/*
 					if (grawitacja <= 0)
 					{
-						czy_skonczyc_skok = true;
+						czy_skonczyc_skok == true;
 					}
-*/
+
 
 					if (grawitacja == -16)
 					{
@@ -355,11 +354,11 @@ int main(void)
 			
 				while ((i < 20) && (dotyka_gruntu != true))
 				{
-					if (!(((kolider_x + 41 > 0) && (kolider_x + 41 <= 795) && (pos_y + i > 825) && (pos_y < 1007))
-						|| ((kolider_x + 41 > 850) && (kolider_x + 41 <= 1645) && (pos_y + i > 825) && (pos_y < 1007))
-						|| ((kolider_x + 41 > 1645) && (kolider_x + 41 <= 2440) && (pos_y + i > 825) && (pos_y < 1007))
-						|| ((kolider_x + 41 > 2440) && (kolider_x + 41 <= 3235) && (pos_y + i > 825) && (pos_y < 1007))
-						|| ((kolider_x + 41 > 3235) && (kolider_x + 41 <= 4030) && (pos_y + i > (825 - 45)) && (pos_y < (1007 - 45)))
+					if (!(((kolider_x + 41 > 0) && (kolider_x + 41 <= 795) && (pos_y + 15 + i >= 825) && (pos_y < 1007))
+						|| ((kolider_x + 41 > 850) && (kolider_x + 41 <= 1645) && (pos_y + 15 + i >= 825) && (pos_y < 1007))
+						|| ((kolider_x + 41 > 1645) && (kolider_x + 41 <= 2440) && (pos_y + 15 + i >= 825) && (pos_y < 1007))
+						|| ((kolider_x + 41 > 2440) && (kolider_x + 41 <= 3235) && (pos_y + 15 + i >= 825) && (pos_y < 1007))
+						|| ((kolider_x + 41 > 3235) && (kolider_x + 41 <= 4030) && (pos_y + 15 + i >= (825 - 45)) && (pos_y < (1007 - 45)))
 						|| (skok == true)))
 					{
 						dotyka_gruntu = false;
@@ -378,6 +377,8 @@ int main(void)
 					i++;
 				}
 
+				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Czy dotyka gruntu: %i", dotyka_gruntu);
+
 
 			
 
@@ -385,15 +386,14 @@ int main(void)
 				{
 					pos_y = pos_y + 20;
 				}
-				if((dotyka_gruntu == true)&& (skok!=true))
+				if ((dotyka_gruntu == true))
 				{
-					pos_y = pos_y - (20-i);
+					pos_y = (pos_y -(20-i));
 				}
-			
 
 				i = 0;
 				dotyka_gruntu = false;
-				czy_skonczyc_skok = false;
+				czy_skonczyc_skok == false;
 //=================================================//
 				//KOLIDERY PRZECIWNIKÓW
 
