@@ -306,7 +306,10 @@ int main(void)
 
 				if (pos_x < 960)
 				{
-					pos_x -= keys[LEFT] * 5;
+					if (!(((pos_x <= 0) && (pos_x + 41 >= -50))))
+					{
+						pos_x -= keys[LEFT] * 5;
+					}
 					pos_x += keys[RIGHT] * 5;
 					kolider_x = pos_x;
 				}
@@ -319,10 +322,27 @@ int main(void)
 
 				if (pos_x >= 960)
 				{
-					kamera_x -= keys[RIGHT] * 5;
-					kamera_x += keys[LEFT] * 5;
-					kolider_x += keys[RIGHT] * 5;
-					kolider_x -= keys[LEFT] * 5;
+//=============================================================================================================//
+					//KOLIDERY SCIANY OD LEWEJ
+
+					if (!( ((kolider_x + 83 + 5 >= 850) && (kolider_x + 41 <= 1000) && (pos_y > 822))
+						|| ((kolider_x + 83 + 5 >= 2440) && (kolider_x + 41 <= 3000) && (pos_y > 822))
+						|| ((kolider_x + 83 + 5 >= 3235) && (kolider_x + 41 <= 4000) && (pos_y > 777))
+						|| ((kolider_x + 83 + 5 >= 4130) && (kolider_x + 41 <= 4500) && (pos_y > 867))))
+					{
+						kolider_x += keys[RIGHT] * 5;
+						kamera_x -= keys[RIGHT] * 5;
+					}
+
+//------------------------------------------------------------------------------------------------------------//
+					//KOLIDERY SCIANY OD PRAWEJ
+
+					if (!( ((kolider_x <= 1645) && (kolider_x + 41 >= 1000) && (pos_y > 822))
+						|| ((kolider_x <= 4925) && (kolider_x + 41 >= 4500) && (pos_y > 867))))
+					{
+						kamera_x += keys[LEFT] * 5;
+						kolider_x -= keys[LEFT] * 5;
+					}
 				}
 
 				if ((keys[SPACE] == true))
@@ -350,16 +370,19 @@ int main(void)
 
 
 //=================================================//
+
+			
 				//KOLIDERY GRUNTU(grawitacja dziala jesli to cos NIE JEST) //795x182
 				i = 0;
 			
 				while ((i < 20) && (dotyka_gruntu != true))
 				{
-					if (!(((kolider_x + 41 > 0) && (kolider_x + 41 <= 795) && (pos_y + i > 825) && (pos_y < 1007))
-						|| ((kolider_x + 41 > 850) && (kolider_x + 41 <= 1645) && (pos_y + i > 825) && (pos_y < 1007))
-						|| ((kolider_x + 41 > 1645) && (kolider_x + 41 <= 2440) && (pos_y + i > 825) && (pos_y < 1007))
-						|| ((kolider_x + 41 > 2440) && (kolider_x + 41 <= 3235) && (pos_y + i > 825) && (pos_y < 1007))
-						|| ((kolider_x + 41 > 3235) && (kolider_x + 41 <= 4030) && (pos_y + i > (825 - 45)) && (pos_y < (1007 - 45)))
+					if (!(((kolider_x + 41 > 0) && (kolider_x + 41 < 795) && (pos_y + i > 825) && (pos_y < 1007))
+						|| ((kolider_x + 41 > 850) && (kolider_x + 41 < 1645) && (pos_y + i > 825) && (pos_y < 1007))
+						|| ((kolider_x + 41 > 1645) && (kolider_x + 41 < 2440) && (pos_y + i > 825 + 50) && (pos_y < 1007+ 50))
+						|| ((kolider_x + 41 > 2440) && (kolider_x + 41 < 3235) && (pos_y + i > 825) && (pos_y < 1007))
+						|| ((kolider_x + 41 > 3235) && (kolider_x + 41 < 4030) && (pos_y + i > (825 - 45)) && (pos_y < (1007 - 45)))
+						|| ((kolider_x + 41 > 4130) && (kolider_x + 41 < 4925) && (pos_y + i > (825 + 45)) && (pos_y < (1007 + 45)))
 						|| (skok == true)))
 					{
 						dotyka_gruntu = false;
@@ -488,9 +511,13 @@ int main(void)
 													//WYSWIETLANIE GRUNTU
 				al_draw_bitmap(grunt1, grunt1_x + kamera_x, grunt1_y, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 850 + kamera_x, grunt1_y, 0);
-				al_draw_bitmap(grunt1, grunt1_x + 1645 + kamera_x, grunt1_y, 0);
+				al_draw_bitmap(grunt1, grunt1_x + 1645 + kamera_x, grunt1_y + 50, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 2440 + kamera_x, grunt1_y, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 3235 + kamera_x, grunt1_y-45, 0);
+
+				al_draw_bitmap(grunt1, grunt1_x + 4130 + kamera_x, grunt1_y + 45, 0);
+			
+
 
 
 
@@ -506,7 +533,7 @@ int main(void)
 				al_draw_bitmap(zycie_zielone, grunt1_x + 1300 + kamera_x + kolider_w2 - 40, grunt1_y - 120, 0);
 
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 50, ALLEGRO_ALIGN_LEFT, "grawitacja: %i", grawitacja);
-				//al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Czy dotyka gruntu: %i", dotyka_gruntu);
+				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Kamera x: %i", kamera_x);
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "skok: %i", skok);
 
 				al_draw_textf(font18, al_map_rgb(200, 0, 255), 150, 150, ALLEGRO_ALIGN_LEFT, "pos_y to: %i", pos_y + 15);
