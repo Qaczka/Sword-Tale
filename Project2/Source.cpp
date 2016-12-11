@@ -5,7 +5,7 @@
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
 
-enum KEYS{LEFT,RIGHT,SPACE}; //nazywaM keysy bo bedzie ciezko zapamietac z tablicy co jest czym
+enum KEYS{A,D,SPACE,P}; //nazywaM keysy bo bedzie ciezko zapamietac z tablicy co jest czym
 
 int main(void)
 {
@@ -33,9 +33,12 @@ int main(void)
 	int kamera_x = 0;
 
 	int czas_po_utracie_zycia = 120;
+	int czas_po_utracie_zycia_wroga = 35;
+
 
 	int zegarek = 0;
 	int zegarek_animacja_boh = 0;
+	int zegarek_atak = 0;
 
 	int grawitacja = 15;
 
@@ -49,6 +52,7 @@ int main(void)
 	bool czy_bohater_biegnie = false;
 	bool czy_bohater_wzlatuje = false;
 	bool czy_bohater_spada = false;
+	bool czy_bohater_atakuje = false;
 
 
 	bool sciezka_w1 = false;
@@ -61,6 +65,10 @@ int main(void)
 	int kolider_w2=0;
 
 	int ilosc_zyc = 3;
+	int zycie_w1 = 2;
+	int zycie_w2 = 2;
+	bool czy_wrog1_martwy = false;
+	bool czy_wrog2_martwy = false;
 
 	int kolider_x = pos_x;
 	int kolider_y = pos_y;
@@ -73,7 +81,7 @@ int main(void)
 
 
 
-	bool keys[4] = { false,false, false};//bo ich nie trzymasz
+	bool keys[4] = { false,false, false,false};//bo ich nie trzymasz
 
 
  //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -240,18 +248,22 @@ int main(void)
 			{
 				switch (ev.keyboard.keycode)
 				{
-				case ALLEGRO_KEY_LEFT:
-					keys[LEFT] = true;
+				case ALLEGRO_KEY_A:
+					keys[A] = true;
 					ostatni_ruch = 1;
 					czy_bohater_biegnie = true;
 					break;
-				case ALLEGRO_KEY_RIGHT:
-					keys[RIGHT] = true;
+				case ALLEGRO_KEY_D:
+					keys[D] = true;
 					ostatni_ruch = 0;
 					czy_bohater_biegnie = true;
 					break;
 				case ALLEGRO_KEY_SPACE:
 					keys[SPACE] = true;
+					break;
+				case ALLEGRO_KEY_P:
+					keys[P] = true;
+					czy_bohater_atakuje = true;
 					break;
 				}
 			}
@@ -260,12 +272,12 @@ int main(void)
 			{
 				switch (ev.keyboard.keycode)
 				{
-				case ALLEGRO_KEY_LEFT:
-					keys[LEFT] = false;
+				case ALLEGRO_KEY_A:
+					keys[A] = false;
 					czy_bohater_biegnie = false;
 					break;
-				case ALLEGRO_KEY_RIGHT:
-					keys[RIGHT] = false;
+				case ALLEGRO_KEY_D:
+					keys[D] = false;
 					czy_bohater_biegnie = false;
 					break;
 
@@ -288,10 +300,6 @@ int main(void)
 			else if (ev.type == ALLEGRO_EVENT_TIMER)
 			{
 
-				if (czas_po_utracie_zycia != 0)
-				{
-					czas_po_utracie_zycia -= 1;
-				}
 
 				if ((pos_y - 66 > 1080) || (ilosc_zyc == -1))
 				{
@@ -338,9 +346,9 @@ int main(void)
 				{
 					if (!(((pos_x <= 0) && (pos_x + 41 >= -50))))
 					{
-						pos_x -= keys[LEFT] * 5;
+						pos_x -= keys[A] * 5;
 					}
-					pos_x += keys[RIGHT] * 5;
+					pos_x += keys[D] * 5;
 					kolider_x = pos_x;
 				}
 
@@ -360,18 +368,19 @@ int main(void)
 						|| ((kolider_x + 83 + 5 >= 3235) && (kolider_x + 41 <= 4000) && (pos_y > 777))
 						|| ((kolider_x + 83 + 5 >= 4130) && (kolider_x + 41 <= 4500) && (pos_y > 867))))
 					{
-						kolider_x += keys[RIGHT] * 5;
-						kamera_x -= keys[RIGHT] * 5;
+						kolider_x += keys[D] * 5;
+						kamera_x -= keys[D] * 5;
 					}
 
 //------------------------------------------------------------------------------------------------------------//
 					//KOLIDERY SCIANY OD PRAWEJ
 
 					if (!( ((kolider_x <= 1645) && (kolider_x + 41 >= 1000) && (pos_y > 822))
+						|| ((kolider_x <= 4030) && (kolider_x + 41 >= 3500) && (pos_y > 777))
 						|| ((kolider_x <= 4925) && (kolider_x + 41 >= 4500) && (pos_y > 867))))
 					{
-						kamera_x += keys[LEFT] * 5;
-						kolider_x -= keys[LEFT] * 5;
+						kamera_x += keys[A] * 5;
+						kolider_x -= keys[A] * 5;
 					}
 				}
 
@@ -474,24 +483,54 @@ int main(void)
 					zegarek_animacja_boh = 0;
 				}
 
+				if (czy_bohater_atakuje == true)
+				{
+					zegarek_atak++;
+				}
 
+				if (zegarek_atak == 60)
+				{
+					zegarek_atak = 0;
+					keys[P] = false;
+					czy_bohater_atakuje = false;
+				}
 
+				if (czas_po_utracie_zycia != 0)
+				{
+					czas_po_utracie_zycia -= 1;
+				}
+
+				if (czas_po_utracie_zycia_wroga != 0)
+				{
+					czas_po_utracie_zycia_wroga -= 1;
+				}
 
 
 //=================================================//
 				//KOLIDERY PRZECIWNIKÓW
 
 
-				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1000 + kolider_w1 + 220)) 
-					|| ((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1300 + kolider_w2 + 220))) 
+				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1000 + kolider_w1 + 220)&&(czy_wrog1_martwy!=true)) 
+					|| ((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1300 + kolider_w2 + 220) && (czy_wrog2_martwy != true)))
 					&& (czas_po_utracie_zycia == 0))
 				{
 					ilosc_zyc -= 1;
 					czas_po_utracie_zycia = 120;
 				}
 
-
-
+				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1000 + kolider_w1 + 220))
+					&&(czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true)))
+				{
+					zycie_w1--;
+					czas_po_utracie_zycia_wroga = 35;
+				}
+				if ((((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1300 + kolider_w2 + 220)))
+					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true))
+				{
+					zycie_w2--;
+					czas_po_utracie_zycia_wroga = 35;
+				}
+				 
 //==================================================//
 				//SKOK
 
@@ -562,48 +601,56 @@ int main(void)
 				//al_draw_filled_rectangle(pos_x, pos_y, pos_x + 30, pos_y + 30, al_map_rgb(255, 0, 255));
 				if (ostatni_ruch == 0)
 				{
-					if ((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true))
+					if ((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(ruch_boh1, pos_x, pos_y + 15, 0);
 					}
-					if ((zegarek_animacja_boh >= 25) && (zegarek_animacja_boh < 50)&&(czy_bohater_biegnie==true)&&(czy_bohater_spada!=true)&&(czy_bohater_wzlatuje!=true))
+					if ((zegarek_animacja_boh >= 25) && (zegarek_animacja_boh < 50) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(ruch_boh2, pos_x, pos_y + 15, 0);
 					}
-					if((czy_bohater_biegnie==false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true))
+					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(bohater, pos_x, pos_y + 15, 0);
 					}
-					if (czy_bohater_wzlatuje == true)
+					if ((czy_bohater_wzlatuje == true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(skok_gora, pos_x, pos_y + 15, 0);
 					}
-					if (czy_bohater_spada == true)
+					if ((czy_bohater_spada == true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(skok_dol, pos_x, pos_y + 15, 0);
+					}
+					if (czy_bohater_atakuje == true)
+					{
+						al_draw_bitmap(atak, pos_x, pos_y + 15, 0);
 					}
 				}
 				else
 				{
-					if ((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true))
+					if ((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true)&&(czy_bohater_atakuje!=true))
 					{
 						al_draw_bitmap(ruch_boh1, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
-					if ((zegarek_animacja_boh >= 25) && (zegarek_animacja_boh < 50) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true))
+					if ((zegarek_animacja_boh >= 25) && (zegarek_animacja_boh < 50) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(ruch_boh2, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
-					if((czy_bohater_biegnie==false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true))
+					if((czy_bohater_biegnie==false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(bohater, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
-					if (czy_bohater_wzlatuje == true)
+					if ((czy_bohater_wzlatuje == true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(skok_gora, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
-					if (czy_bohater_spada == true)
+					if ((czy_bohater_spada == true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(skok_dol, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+					}
+					if (czy_bohater_atakuje == true)
+					{
+						al_draw_bitmap(atak, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
 				}
 
@@ -621,18 +668,44 @@ int main(void)
 
 
 													//PRZECIWNICY
-				al_draw_bitmap(wrog1, grunt1_x + 1000 + kamera_x + kolider_w1, grunt1_y - 80, 0);
-				al_draw_bitmap(wrog2, grunt1_x + 1300 + kamera_x + kolider_w2, grunt1_y - 80, 0);
+				if (zycie_w1 > 0)
+				{
+					al_draw_bitmap(wrog1, grunt1_x + 1000 + kamera_x + kolider_w1, grunt1_y - 80, 0);
+				}
+				else
+				{
+					czy_wrog1_martwy = true;
+				}
+				if (zycie_w2 > 0)
+				{
+					al_draw_bitmap(wrog2, grunt1_x + 1300 + kamera_x + kolider_w2, grunt1_y - 80, 0);
+				}
+				else
+				{
+					czy_wrog2_martwy = true;
+				}
 
 
 													//ZYCIE PRZECIWNIKOW
-				al_draw_bitmap(zycie_zielone, grunt1_x + 1000 + kamera_x + kolider_w1 + 40, grunt1_y - 120, 0);
-				al_draw_bitmap(zycie_zielone, grunt1_x + 1300 + kamera_x + kolider_w2 + 40, grunt1_y - 120, 0);
-				al_draw_bitmap(zycie_zielone, grunt1_x + 1000 + kamera_x + kolider_w1 - 40, grunt1_y - 120, 0);
-				al_draw_bitmap(zycie_zielone, grunt1_x + 1300 + kamera_x + kolider_w2 - 40, grunt1_y - 120, 0);
+				if (zycie_w1 >= 2)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 1000 + kamera_x + kolider_w1 + 40, grunt1_y - 120, 0);
+				}
+				if (zycie_w1 >= 1)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 1000 + kamera_x + kolider_w1 - 40, grunt1_y - 120, 0);
+				}
+				if (zycie_w2 >= 2)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 1300 + kamera_x + kolider_w2 + 40, grunt1_y - 120, 0);
+				}
+				if (zycie_w2 >= 1)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 1300 + kamera_x + kolider_w2 - 40, grunt1_y - 120, 0);
+				}
 
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 50, ALLEGRO_ALIGN_LEFT, "grawitacja: %i", grawitacja);
-				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Kamera x: %i", kamera_x);
+				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Czy atak %i", czy_bohater_atakuje);
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "skok: %i", skok);
 
 				al_draw_textf(font18, al_map_rgb(200, 0, 255), 150, 150, ALLEGRO_ALIGN_LEFT, "pos_y to: %i", pos_y + 15);
@@ -673,8 +746,8 @@ int main(void)
 					pos_y = (wysokosc * 3) / 4;
 					kamera_x = 0;
 					ilosc_zyc = 3;
-					keys[RIGHT] = false;
-					keys[LEFT] = false;
+					keys[D] = false;
+					keys[A] = false;
 					ostatni_ruch = 0;
 					break;
 				}
