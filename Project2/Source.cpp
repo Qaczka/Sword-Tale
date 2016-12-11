@@ -194,20 +194,25 @@ int main(void)
 		klatkowe_start=klatkowe_start+2;
 
 
-		if ((klatkowe_start >= 0) && (klatkowe_start < 60))
+		if ((klatkowe_start >= 0) && (klatkowe_start < 240))
 		{
 			al_draw_bitmap(tytul1, 0, 0, 0);
 		}
-		if ((klatkowe_start >= 60) && (klatkowe_start < 120))
+		if ((klatkowe_start >= 240) && (klatkowe_start < 480))
+		{
+			al_draw_bitmap(tytul3, 0, 0, 0);
+		}
+		if ((klatkowe_start >= 480) && (klatkowe_start < 720))
 		{
 			al_draw_bitmap(tytul2, 0, 0, 0);
 		}
-		if ((klatkowe_start >= 120) && (klatkowe_start < 180))
+		if ((klatkowe_start >= 720) && (klatkowe_start < 960))
 		{
 			al_draw_bitmap(tytul3, 0, 0, 0);
 		}
 
-		if (klatkowe_start == 180)
+
+		if (klatkowe_start == 960)
 		{
 			klatkowe_start = 0;
 		}
