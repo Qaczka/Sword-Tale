@@ -54,6 +54,7 @@ int main(void)
 	bool czy_bohater_wzlatuje = false;
 	bool czy_bohater_spada = false;
 	bool czy_bohater_atakuje = false;
+	bool ruchAD = false;
 
 
 	bool sciezka_w1 = false;
@@ -619,14 +620,22 @@ int main(void)
 				//al_draw_filled_rectangle(pos_x, pos_y, pos_x + 30, pos_y + 30, al_map_rgb(255, 0, 255));
 				if (ostatni_ruch == 0)
 				{
-					if ((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
+					if ((keys[A] == true) && (keys[D] == true))
+					{
+						al_draw_bitmap(bohater, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						ruchAD = true;
+					}
+					if (((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true)) && (ruchAD == false))
 					{
 						al_draw_bitmap(ruch_boh1, pos_x, pos_y + 15, 0);
 					}
-					if ((zegarek_animacja_boh >= 25) && (zegarek_animacja_boh < 50) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
+					if (((zegarek_animacja_boh >= 25) && (zegarek_animacja_boh < 50) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true)) && (ruchAD == false))
 					{
 						al_draw_bitmap(ruch_boh2, pos_x, pos_y + 15, 0);
 					}
+
+					ruchAD = false;
+
 					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(bohater, pos_x, pos_y + 15, 0);
@@ -646,14 +655,22 @@ int main(void)
 				}
 				else
 				{
-					if ((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true)&&(czy_bohater_atakuje!=true))
+					if ((keys[A] == true) && (keys[D] == true))
+					{
+						al_draw_bitmap(bohater, pos_x, pos_y + 15, 0);
+						ruchAD = true;
+					}
+					if (((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true)&&(czy_bohater_atakuje!=true)) && (ruchAD == false))
 					{
 						al_draw_bitmap(ruch_boh1, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
-					if ((zegarek_animacja_boh >= 25) && (zegarek_animacja_boh < 50) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
+					if (((zegarek_animacja_boh >= 25) && (zegarek_animacja_boh < 50) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true)) && (ruchAD==false))
 					{
 						al_draw_bitmap(ruch_boh2, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
+
+					ruchAD = false;
+
 					if((czy_bohater_biegnie==false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
 					{
 						al_draw_bitmap(bohater, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
@@ -671,6 +688,7 @@ int main(void)
 						al_draw_bitmap(atak, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
 				}
+
 
 													//WYSWIETLANIE GRUNTU
 				al_draw_bitmap(grunt1, grunt1_x + kamera_x, grunt1_y, 0);
