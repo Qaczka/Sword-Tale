@@ -41,6 +41,7 @@ int main(void)
 	int zegarek_atak = 0;
 
 	int grawitacja = 15;
+	int przycisk = 0;
 
 	bool done = false;
 	bool przerys = true;
@@ -249,14 +250,14 @@ int main(void)
 				switch (ev.keyboard.keycode)
 				{
 				case ALLEGRO_KEY_A:
-					keys[A] = true;
-					ostatni_ruch = 1;
-					czy_bohater_biegnie = true;
+						keys[A] = true;
+						ostatni_ruch = 1;
+						czy_bohater_biegnie = true;
 					break;
 				case ALLEGRO_KEY_D:
-					keys[D] = true;
-					ostatni_ruch = 0;
-					czy_bohater_biegnie = true;
+						keys[D] = true;
+						ostatni_ruch = 0;
+						czy_bohater_biegnie = true;
 					break;
 				case ALLEGRO_KEY_SPACE:
 					keys[SPACE] = true;
@@ -273,12 +274,19 @@ int main(void)
 				switch (ev.keyboard.keycode)
 				{
 				case ALLEGRO_KEY_A:
-					keys[A] = false;
-					czy_bohater_biegnie = false;
+					if (keys[A] == true)
+					{
+						czy_bohater_biegnie = false;
+
+					}
+						keys[A] = false;
 					break;
 				case ALLEGRO_KEY_D:
-					keys[D] = false;
-					czy_bohater_biegnie = false;
+					if (keys[D] == true)
+					{
+						czy_bohater_biegnie = false;
+					}
+						keys[D] = false;
 					break;
 
 				case ALLEGRO_KEY_ESCAPE:
@@ -340,7 +348,7 @@ int main(void)
 						sciezka_w2 = false;
 					}
 				}
-
+				przycisk = pos_x;
 
 				if (pos_x < 960)
 				{
@@ -350,7 +358,21 @@ int main(void)
 					}
 					pos_x += keys[D] * 5;
 					kolider_x = pos_x;
+
+					//fix klawiszy
+					if ((przycisk - pos_x) > 0)
+					{
+						ostatni_ruch = 1;
+						czy_bohater_biegnie = true;
+					}
+					if ((przycisk - pos_x) < 0)
+					{
+						ostatni_ruch = 0;
+						czy_bohater_biegnie = true;
+					}
 				}
+
+				
 
 				else if (kamera_x == 0)
 				{
@@ -360,6 +382,8 @@ int main(void)
 
 				if (pos_x >= 960)
 				{
+					przycisk = kamera_x;
+
 //=============================================================================================================//
 					//KOLIDERY SCIANY OD LEWEJ
 
@@ -382,7 +406,24 @@ int main(void)
 						kamera_x += keys[A] * 5;
 						kolider_x -= keys[A] * 5;
 					}
+
+					//fix dwoch klawiszy
+					if ((przycisk - kamera_x) < 0)
+					{
+						ostatni_ruch = 1;
+						czy_bohater_biegnie = true;
+					}
+					if ((przycisk - kamera_x) > 0)
+					{
+						ostatni_ruch = 0;
+						czy_bohater_biegnie = true;
+					}
 				}
+
+
+//=======================================================================================================================================//
+																	//SKOK
+
 
 				if ((keys[SPACE] == true))
 				{
@@ -532,36 +573,12 @@ int main(void)
 				}
 				 
 //==================================================//
-				//SKOK
 
-				/*
-				if (czas_po_skoku != 2)
-				{
-					czas_po_skoku++;
-				}
-
-				if ((keys[SPACE] == true) && (dotyka_gruntu == false))
-				{
-					pos_y -= grawitacja;
-					grawitacja -= 1;
-					skok = true;
-
-					if ((grawitacja == -15)||(dotyka_gruntu==true))
-					{
-						keys[SPACE] = false;
-						grawitacja = 15;
-						skok = false;
-					}
-				}
-				*/
-
-		
 
 				
 
 
 
-				//jak prawda to 1 razy to a jak nie to nie ma
 				przerys = true;//ROBI ZA WZNOWIENIE CZASU JAK SUPER HOT
 			}
 
@@ -595,6 +612,7 @@ int main(void)
 					al_draw_bitmap(zycie, 10, 10, 0);
 				}
 
+			
 
 
 
