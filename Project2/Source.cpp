@@ -18,6 +18,7 @@ int main(void)
 	al_init_image_addon();
 	al_init_font_addon();
 	al_init_ttf_addon();
+	al_install_mouse();
 
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -29,10 +30,13 @@ int main(void)
 
 	int klatkowe_start = 0;
 
+	float mysz_x=szerokosc/2;
+	float mysz_y=wysokosc/2;
+
 
 	int kamera_x = 0;
 
-	int czas_po_utracie_zycia = 120;
+	int czas_po_utracie_zycia = 60;
 	int czas_po_utracie_zycia_wroga = 35;
 
 
@@ -109,6 +113,7 @@ int main(void)
 	ALLEGRO_BITMAP *tlo_gl = NULL;
 	ALLEGRO_BITMAP *tlo2 = NULL;
 
+	ALLEGRO_BITMAP *strzala = NULL;
 	ALLEGRO_BITMAP *zycie = NULL;
 	ALLEGRO_BITMAP *tytul = NULL;
 	ALLEGRO_BITMAP *tytul1 = NULL;
@@ -157,6 +162,7 @@ int main(void)
 	atak = al_load_bitmap("atak.png");
 	skok_gora = al_load_bitmap("skok_gora.png");
 	skok_dol = al_load_bitmap("skok_dol.png");
+	strzala = al_load_bitmap("strzala.png");
 
 	smierc2 = al_load_bitmap("tytul_smierc.png");
 
@@ -172,6 +178,7 @@ int main(void)
 	timer = al_create_timer(1.0 / FPS);
 
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	al_register_event_source(event_queue, al_get_mouse_event_source());
 	al_register_event_source(event_queue, al_get_display_event_source(okno));
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
@@ -300,6 +307,16 @@ int main(void)
 			{
 				done = true;
 			}
+
+			//=======================================================================================================================================//
+			//STRZALA
+
+			else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES || ev.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY)
+			{
+				mysz_x = ev.mouse.x;
+				mysz_y = ev.mouse.y;
+			}
+
 
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -452,6 +469,8 @@ int main(void)
 
 
 
+
+
 //=================================================//
 
 			
@@ -554,10 +573,10 @@ int main(void)
 
 				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1000 + kolider_w1 + 220)&&(czy_wrog1_martwy!=true)) 
 					|| ((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1300 + kolider_w2 + 220) && (czy_wrog2_martwy != true)))
-					&& (czas_po_utracie_zycia == 0))
+					&& (czas_po_utracie_zycia == 0)&&(czy_bohater_atakuje==false))
 				{
 					ilosc_zyc -= 1;
-					czas_po_utracie_zycia = 120;
+					czas_po_utracie_zycia = 60;
 				}
 
 				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1000 + kolider_w1 + 220))
@@ -614,10 +633,9 @@ int main(void)
 				}
 
 			
+														//Animacje bohatera
 
 
-
-				//al_draw_filled_rectangle(pos_x, pos_y, pos_x + 30, pos_y + 30, al_map_rgb(255, 0, 255));
 				if (ostatni_ruch == 0)
 				{
 					if (((keys[A] == true) && (keys[D] == true)) && (skok != true))
@@ -698,6 +716,9 @@ int main(void)
 				al_draw_bitmap(grunt1, grunt1_x + 3235 + kamera_x, grunt1_y-45, 0);
 
 				al_draw_bitmap(grunt1, grunt1_x + 4130 + kamera_x, grunt1_y + 45, 0);
+
+													//WYSWIETLANIE ELEMENTOW
+				al_draw_bitmap(strzala, mysz_x, mysz_y, 0);
 			
 
 
@@ -785,6 +806,11 @@ int main(void)
 					keys[D] = false;
 					keys[A] = false;
 					ostatni_ruch = 0;
+					ilosc_zyc = 3;
+					zycie_w1 = 2;
+					zycie_w2 = 2;
+					czy_wrog1_martwy = false;
+					czy_wrog2_martwy = false;
 					break;
 				}
 			}
