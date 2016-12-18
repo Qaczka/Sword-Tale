@@ -620,7 +620,7 @@ int main(void)
 				//al_draw_filled_rectangle(pos_x, pos_y, pos_x + 30, pos_y + 30, al_map_rgb(255, 0, 255));
 				if (ostatni_ruch == 0)
 				{
-					if ((keys[A] == true) && (keys[D] == true))
+					if (((keys[A] == true) && (keys[D] == true)) && (skok != true))
 					{
 						al_draw_bitmap(bohater, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 						ruchAD = true;
@@ -655,7 +655,7 @@ int main(void)
 				}
 				else
 				{
-					if ((keys[A] == true) && (keys[D] == true))
+					if (((keys[A] == true) && (keys[D] == true))&&(skok!=true))
 					{
 						al_draw_bitmap(bohater, pos_x, pos_y + 15, 0);
 						ruchAD = true;
