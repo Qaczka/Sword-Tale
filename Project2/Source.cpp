@@ -4,6 +4,7 @@
 #include <allegro5\allegro_native_dialog.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
+#include <cmath>
 
 enum KEYS{A,D,SPACE,P,E}; //nazywaM keysy bo bedzie ciezko zapamietac z tablicy co jest czym
 
@@ -33,6 +34,8 @@ int main(void)
 	float mysz_x=szerokosc/2;
 	float mysz_y=wysokosc/2;
 
+	float kat_strzalu = 0;
+
 
 	int kamera_x = 0;
 
@@ -59,6 +62,7 @@ int main(void)
 	bool czy_bohater_wzlatuje = false;
 	bool czy_bohater_spada = false;
 	bool czy_bohater_atakuje = false;
+	bool czy_bohater_naciaga = false;
 	bool ruchAD = false;
 	bool czy_strzala_leci = false;
 
@@ -128,6 +132,8 @@ int main(void)
 	ALLEGRO_BITMAP *smierc2 = NULL;
 	ALLEGRO_BITMAP *zycie_zielone = NULL;
 	ALLEGRO_BITMAP *zycie_czerwone = NULL;
+	ALLEGRO_BITMAP *naciag = NULL;
+
 
 	ALLEGRO_FONT *font18 = al_load_ttf_font("verdana.ttf", 18, 0);
 
@@ -169,6 +175,7 @@ int main(void)
 	skok_gora = al_load_bitmap("skok_gora.png");
 	skok_dol = al_load_bitmap("skok_dol.png");
 	strzala = al_load_bitmap("strzala.png");
+	naciag = al_load_bitmap("naciag.png");
 
 	smierc2 = al_load_bitmap("tytul_smierc.png");
 
@@ -281,6 +288,7 @@ int main(void)
 
 				case ALLEGRO_KEY_E:
 					keys[E] = true;
+					czy_bohater_naciaga = true;
 					break;
 
 				case ALLEGRO_KEY_P:
@@ -319,7 +327,7 @@ int main(void)
 						strzala_y = pos_y;
 						strzala_g = 0;
 					}
-						
+					czy_bohater_naciaga = false;
 						keys[E] = false;
 					break;
 
@@ -631,8 +639,10 @@ int main(void)
 					czas_po_utracie_zycia_wroga = 35;
 				}
 				 
-//==================================================//
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+																		//ZACHOWANIE STRZALY
+				kat_strzalu = tan((-mysz_y+(float)pos_y) / (-mysz_x+(float)pos_x));
 
 				if ((czy_strzala_leci==true))
 				{
@@ -697,7 +707,7 @@ int main(void)
 
 					ruchAD = false;
 
-					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
+					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true)&&(czy_bohater_naciaga==false))
 					{
 						al_draw_bitmap(bohater, pos_x, pos_y + 15, 0);
 					}
@@ -712,6 +722,10 @@ int main(void)
 					if (czy_bohater_atakuje == true)
 					{
 						al_draw_bitmap(atak, pos_x, pos_y + 15, 0);
+					}
+					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true) && (czy_bohater_naciaga == true))
+					{
+						al_draw_bitmap(naciag, pos_x, pos_y + 15, 0);
 					}
 				}
 				else
@@ -732,7 +746,7 @@ int main(void)
 
 					ruchAD = false;
 
-					if((czy_bohater_biegnie==false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true))
+					if((czy_bohater_biegnie==false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true) && (czy_bohater_naciaga==false))
 					{
 						al_draw_bitmap(bohater, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
@@ -747,6 +761,10 @@ int main(void)
 					if (czy_bohater_atakuje == true)
 					{
 						al_draw_bitmap(atak, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+					}
+					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true) && (czy_bohater_naciaga == true))
+					{
+						al_draw_bitmap(naciag, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
 					}
 				}
 
@@ -806,9 +824,9 @@ int main(void)
 					al_draw_bitmap(zycie_zielone, grunt1_x + 1300 + kamera_x + kolider_w2 - 40, grunt1_y - 120, 0);
 				}
 
-				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 50, ALLEGRO_ALIGN_LEFT, "grawitacja: %i", grawitacja);
-				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Czy atak %i", strzala_x);
-				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "skok: %i", skok);
+				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 50, ALLEGRO_ALIGN_LEFT, "Mysz x: %f", mysz_x);
+				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Mysz y %f", mysz_y);
+				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "kat strzaly: %f", kat_strzalu);
 
 				al_draw_textf(font18, al_map_rgb(200, 0, 255), 150, 150, ALLEGRO_ALIGN_LEFT, "pos_x to: %i", pos_x);
 				al_draw_textf(font18, al_map_rgb(255, 0, 0), 1700, 50, 0, "Kolider x to: %i", kolider_x);
