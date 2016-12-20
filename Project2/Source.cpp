@@ -354,9 +354,13 @@ int main(void)
 						{
 							naciag_x = (mysz_x - pos_x);
 						}
-						else
+						else if (mysz_x - pos_x > 400)
 						{
 							naciag_x = 400;
+						}
+						else if (mysz_x - pos_x < -400)
+						{
+							naciag_x = -400;
 						}
 
 						if ((mysz_y - pos_y <= 400) && (mysz_y - pos_y >= -400))
