@@ -363,9 +363,13 @@ int main(void)
 						{
 							naciag_y = (mysz_y - pos_y);
 						}
-						else
+						else if(mysz_y - pos_y > 400)
 						{
 							naciag_y = 400;
+						}
+						else if (mysz_y - pos_y < -400)
+						{
+							naciag_y = -400;
 						}
 					}
 					czy_bohater_naciaga = false;
@@ -695,10 +699,10 @@ int main(void)
 
 					if ((strzal_lewo == true) && (naciag_x<0))
 					{
-						strzala_x = strzala_x + (12 * (naciag_x / 400));
+						strzala_x = strzala_x + (3 * (naciag_x / 400));
 					}
 					
-					strzala_y = strzala_y + strzala_g;
+					strzala_y = strzala_y + strzala_g + 3*(naciag_y / 400);
 				}
 
 
