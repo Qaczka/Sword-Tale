@@ -568,6 +568,12 @@ int main(void)
 						|| ((kolider_x + 41 > 2440) && (kolider_x + 41 < 3235) && (pos_y + i > 825) && (pos_y < 1007))
 						|| ((kolider_x + 41 > 3235) && (kolider_x + 41 < 4030) && (pos_y + i > (825 - 45)) && (pos_y < (1007 - 45)))
 						|| ((kolider_x + 41 > 4130) && (kolider_x + 41 < 4925) && (pos_y + i > (825 + 45)) && (pos_y < (1007 + 45)))
+						//
+						|| ((kolider_x + 41 > 4925) && (kolider_x + 41 < 5720) && (pos_y + i > (825 + 30)) && (pos_y < (1007 + 30)))
+						|| ((kolider_x + 41 > 5720) && (kolider_x + 41 < 6515) && (pos_y + i > (825 + 45)) && (pos_y < (1007 + 45)))
+						|| ((kolider_x + 41 > 6515) && (kolider_x + 41 < 7310) && (pos_y + i > (825 + 45)) && (pos_y < (1007 + 45)))
+						|| ((kolider_x + 41 > 7465) && (kolider_x + 41 < 8260) && (pos_y + i > (825 + 20)) && (pos_y < (1007 + 20)))
+						|| ((kolider_x + 41 > 8260) && (kolider_x + 41 < 9055) && (pos_y + i > (825 + 0)) && (pos_y < (1007 + 0)))
 						|| (skok == true)))
 					{
 						dotyka_gruntu = false;
@@ -676,13 +682,15 @@ int main(void)
 				}
 
 				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1000 + kolider_w1 + 220))
-					&&(czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true)))
+					&&(czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true))
+					||((strzala_x > grunt1_x + 1000 + kolider_w1) && (strzala_x+15 < grunt1_x + 1000 + kolider_w1 + 220) && (czas_po_utracie_zycia_wroga == 0)))
 				{
 					zycie_w1--;
 					czas_po_utracie_zycia_wroga = 35;
 				}
-				if ((((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1300 + kolider_w2 + 220)))
+				if ((((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1300 + kolider_w2 + 220))
 					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true))
+					|| ((strzala_x > grunt1_x + 1300 + kolider_w2) && (strzala_x < grunt1_x + 1300 + kolider_w2 + 220) && (czas_po_utracie_zycia_wroga == 0)))
 				{
 					zycie_w2--;
 					czas_po_utracie_zycia_wroga = 35;
@@ -841,8 +849,17 @@ int main(void)
 				al_draw_bitmap(grunt1, grunt1_x + 1645 + kamera_x, grunt1_y + 50, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 2440 + kamera_x, grunt1_y, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 3235 + kamera_x, grunt1_y-45, 0);
-
 				al_draw_bitmap(grunt1, grunt1_x + 4130 + kamera_x, grunt1_y + 45, 0);
+
+				al_draw_bitmap(grunt1, grunt1_x + 4925 + kamera_x, grunt1_y + 30, 0);
+				al_draw_bitmap(grunt1, grunt1_x + 5720 + kamera_x, grunt1_y + 45, 0);
+				al_draw_bitmap(grunt1, grunt1_x + 6515 + kamera_x, grunt1_y + 45, 0);
+
+				//wyrwa na 205
+				al_draw_bitmap(grunt1, grunt1_x + 7465 + kamera_x, grunt1_y + 20, 0);
+				al_draw_bitmap(grunt1, grunt1_x + 8260 + kamera_x, grunt1_y + 0, 0);
+
+
 
 		
 
