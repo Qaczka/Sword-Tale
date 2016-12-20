@@ -35,6 +35,8 @@ int main(void)
 	float mysz_y=wysokosc/2;
 
 	float kat_strzalu = 0;
+	float naciag_x = 0;
+	float naciag_y = 0;
 
 
 	int kamera_x = 0;
@@ -64,7 +66,10 @@ int main(void)
 	bool czy_bohater_atakuje = false;
 	bool czy_bohater_naciaga = false;
 	bool ruchAD = false;
+
 	bool czy_strzala_leci = false;
+	bool strzal_lewo = false;
+	bool strzal_prawo = false;
 
 
 	bool sciezka_w1 = false;
@@ -271,15 +276,15 @@ int main(void)
 				switch (ev.keyboard.keycode)
 				{
 				case ALLEGRO_KEY_A:
-						keys[A] = true;
-						ostatni_ruch = 1;
-						czy_bohater_biegnie = true;
+					keys[A] = true;
+					ostatni_ruch = 1;
+					czy_bohater_biegnie = true;
 					break;
 
 				case ALLEGRO_KEY_D:
-						keys[D] = true;
-						ostatni_ruch = 0;
-						czy_bohater_biegnie = true;
+					keys[D] = true;
+					ostatni_ruch = 0;
+					czy_bohater_biegnie = true;
 					break;
 
 				case ALLEGRO_KEY_SPACE:
@@ -287,13 +292,29 @@ int main(void)
 					break;
 
 				case ALLEGRO_KEY_E:
-					keys[E] = true;
-					czy_bohater_naciaga = true;
+					if ((czy_bohater_spada == false) && (czy_bohater_wzlatuje==false))
+					{
+						keys[E] = true;
+						czy_bohater_naciaga = true;
+						if (ostatni_ruch == 0)
+						{
+							strzal_prawo = true;
+							strzal_lewo = false;
+						}
+						else
+						{
+							strzal_prawo = false;
+							strzal_lewo = true;
+						}
+					}
 					break;
 
 				case ALLEGRO_KEY_P:
-					keys[P] = true;
-					czy_bohater_atakuje = true;
+					if ((czy_bohater_spada == false) && (czy_bohater_wzlatuje==false))
+					{
+						keys[P] = true;
+						czy_bohater_atakuje = true;
+					}
 					break;
 				}
 			}
@@ -326,6 +347,26 @@ int main(void)
 						strzala_x = pos_x;
 						strzala_y = pos_y;
 						strzala_g = 0;
+
+						//NACI¥G £UKU
+
+						if ((mysz_x - pos_x <= 400) && (mysz_x - pos_x >= -400))
+						{
+							naciag_x = (mysz_x - pos_x);
+						}
+						else
+						{
+							naciag_x = 400;
+						}
+
+						if ((mysz_y - pos_y <= 400) && (mysz_y - pos_y >= -400))
+						{
+							naciag_y = (mysz_y - pos_y);
+						}
+						else
+						{
+							naciag_y = 400;
+						}
 					}
 					czy_bohater_naciaga = false;
 						keys[E] = false;
@@ -642,17 +683,27 @@ int main(void)
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 																		//ZACHOWANIE STRZALY
-				kat_strzalu = tan((-mysz_y+(float)pos_y) / (-mysz_x+(float)pos_x));
 
-				if ((czy_strzala_leci==true))
+				kat_strzalu = tan((mysz_y-(float)pos_y) / (mysz_x-(float)pos_x));
+
+				if (czy_strzala_leci==true)
 				{
-					strzala_x = strzala_x + 12;
+					if ((strzal_prawo == true)&&(naciag_x>0))
+					{
+						strzala_x = strzala_x + (12*(naciag_x/400));
+					}
+
+					if ((strzal_lewo == true) && (naciag_x<0))
+					{
+						strzala_x = strzala_x + (12 * (naciag_x / 400));
+					}
+					
 					strzala_y = strzala_y + strzala_g;
 				}
 
 
 
-				przerys = true;//ROBI ZA WZNOWIENIE CZASU JAK SUPER HOT
+				przerys = true;//ROBI ZA WZNOWIENIE CZASU
 			}
 
 
@@ -684,6 +735,8 @@ int main(void)
 				{
 					al_draw_bitmap(zycie, 10, 10, 0);
 				}
+
+				al_draw_circle(pos_x, pos_y, 400, al_map_rgb(255, 0, 0), 3);
 
 			
 														//Animacje bohatera
@@ -828,7 +881,7 @@ int main(void)
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Mysz y %f", mysz_y);
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "kat strzaly: %f", kat_strzalu);
 
-				al_draw_textf(font18, al_map_rgb(200, 0, 255), 150, 150, ALLEGRO_ALIGN_LEFT, "pos_x to: %i", pos_x);
+				al_draw_textf(font18, al_map_rgb(200, 0, 255), 150, 150, ALLEGRO_ALIGN_LEFT, "Naciag x to: %i", naciag_x);
 				al_draw_textf(font18, al_map_rgb(255, 0, 0), 1700, 50, 0, "Kolider x to: %i", kolider_x);
 
 
