@@ -78,14 +78,29 @@ int main(void)
 	int pos_x = 10;
 	int pos_y = (wysokosc*3)/4;
 
-	int kolider_w1=0;
-	int kolider_w2=0;
+	int kolider_w1 = 0;
+	int kolider_w2 = 0;
+	int kolider_w3 = 0;
+	int kolider_w4 = 0;
+	int kolider_w5 = 0;
+	int kolider_w6 = 0;
 
 	int ilosc_zyc = 3;
+
 	int zycie_w1 = 2;
 	int zycie_w2 = 2;
+	int zycie_w3 = 2;
+	int zycie_w4 = 2;
+	int zycie_w5 = 2;
+	int zycie_w6 = 2;
+
 	bool czy_wrog1_martwy = false;
 	bool czy_wrog2_martwy = false;
+	bool czy_wrog3_martwy = false;
+	bool czy_wrog4_martwy = false;
+	bool czy_wrog5_martwy = false;
+	bool czy_wrog6_martwy = false;
+
 
 	int kolider_x = pos_x;
 	int kolider_y = pos_y;
@@ -488,10 +503,13 @@ int main(void)
 //=============================================================================================================//
 					//KOLIDERY SCIANY OD LEWEJ
 
-					if (!( ((kolider_x + 83 + 5 >= 850) && (kolider_x + 41 <= 1000) && (pos_y > 822))
-						|| ((kolider_x + 83 + 5 >= 2440) && (kolider_x + 41 <= 3000) && (pos_y > 822))
-						|| ((kolider_x + 83 + 5 >= 3235) && (kolider_x + 41 <= 4000) && (pos_y > 777))
-						|| ((kolider_x + 83 + 5 >= 4130) && (kolider_x + 41 <= 4500) && (pos_y > 867))))
+					if (!( ((kolider_x + 83 + 5 >= 850) && (kolider_x + 41 <= 1000) && (pos_y > 807))
+						|| ((kolider_x + 83 + 5 >= 2440) && (kolider_x + 41 <= 3000) && (pos_y > 807))
+						|| ((kolider_x + 83 + 5 >= 3235) && (kolider_x + 41 <= 4000) && (pos_y > 762))
+						|| ((kolider_x + 83 + 5 >= 4130) && (kolider_x + 41 <= 4500) && (pos_y > 852))
+						|| ((kolider_x + 83 + 5 >= 4925) && (kolider_x + 41 <= 5000) && (pos_y > 837))
+						|| ((kolider_x + 83 + 5 >= 7465) && (kolider_x + 41 <= 8260) && (pos_y > 827))
+						|| ((kolider_x + 83 + 5 >= 8260) && (kolider_x + 41 <= 9055) && (pos_y > 807))))
 					{
 						kolider_x += keys[D] * 5;
 						kamera_x -= keys[D] * 5;
@@ -500,9 +518,11 @@ int main(void)
 //------------------------------------------------------------------------------------------------------------//
 					//KOLIDERY SCIANY OD PRAWEJ
 
-					if (!( ((kolider_x <= 1645) && (kolider_x + 41 >= 1000) && (pos_y > 822))
-						|| ((kolider_x <= 4030) && (kolider_x + 41 >= 3500) && (pos_y > 777))
-						|| ((kolider_x <= 4925) && (kolider_x + 41 >= 4500) && (pos_y > 867))))
+					if (!( ((kolider_x + 41 >= 0) && (kolider_x <= 795) && (pos_y > 807))
+						|| ((kolider_x + 41 >= 850) && (kolider_x <= 1645) && (pos_y > 807))
+						|| ((kolider_x + 41 >= 3235) && (kolider_x <= 4030) && (pos_y > 762))
+						|| ((kolider_x + 41 >= 4925) && (kolider_x <= 5720) && (pos_y > 837))
+						|| ((kolider_x + 41 >= 6515) && (kolider_x <= 7310) && (pos_y > 852))))
 					{
 						kamera_x += keys[A] * 5;
 						kolider_x -= keys[A] * 5;
@@ -672,46 +692,121 @@ int main(void)
 //=================================================//
 				//KOLIDERY PRZECIWNIKÓW
 
+					//DLA ZYCIA BOHATERA
 
-				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1000 + kolider_w1 + 220)&&(czy_wrog1_martwy!=true)) 
-					|| ((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1300 + kolider_w2 + 220) && (czy_wrog2_martwy != true)))
+
+				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1220 + kolider_w1)&&(czy_wrog1_martwy!=true)) 
+					|| ((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1520 + kolider_w2) && (czy_wrog2_martwy != true))
+					|| ((kolider_x > grunt1_x + 3300 + kolider_w3) && (kolider_x < grunt1_x + 3520 + kolider_w3) && (czy_wrog3_martwy != true))
+					|| ((kolider_x > grunt1_x + 5100 + kolider_w4) && (kolider_x < grunt1_x + 5320 + kolider_w4) && (czy_wrog4_martwy != true))
+					|| ((kolider_x > grunt1_x + 5800 + kolider_w5) && (kolider_x < grunt1_x + 6020 + kolider_w5) && (czy_wrog5_martwy != true))
+					|| ((kolider_x > grunt1_x + 6500 + kolider_w6) && (kolider_x < grunt1_x + 6720 + kolider_w6) && (czy_wrog6_martwy != true)))
 					&& (czas_po_utracie_zycia == 0)&&(czy_bohater_atakuje==false))
 				{
 					ilosc_zyc -= 1;
 					czas_po_utracie_zycia = 60;
 				}
 
-				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1000 + kolider_w1 + 220))
-					&&(czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true))
-					||((strzala_x > grunt1_x + 1000 + kolider_w1) && (strzala_x+15 < grunt1_x + 1000 + kolider_w1 + 220) && (czas_po_utracie_zycia_wroga == 0)))
+					//DLA ZYCIA PRZECIWNIKOW
+
+				if (((((kolider_x + 83 > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1220 + kolider_w1))
+					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true))
+					|| ((strzala_x > grunt1_x + 1000 + kolider_w1) && (strzala_x + 20 < grunt1_x + 1220 + kolider_w1)
+					&&(strzala_y < grunt1_y + 3) && (strzala_y > grunt1_y - 80)))
+					&& (czas_po_utracie_zycia_wroga == 0))
 				{
 					zycie_w1--;
 					czas_po_utracie_zycia_wroga = 35;
 				}
-				if ((((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1300 + kolider_w2 + 220))
+
+				if (((((kolider_x  + 83 > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1520 + kolider_w2))
 					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true))
-					|| ((strzala_x > grunt1_x + 1300 + kolider_w2) && (strzala_x < grunt1_x + 1300 + kolider_w2 + 220) && (czas_po_utracie_zycia_wroga == 0)))
+					|| ((strzala_x > grunt1_x + 1300 + kolider_w2) && (strzala_x + 20 < grunt1_x + 1520 + kolider_w2)
+					&& (strzala_y < grunt1_y + 3) && (strzala_y > grunt1_y - 80)))
+					&& (czas_po_utracie_zycia_wroga == 0))
 				{
 					zycie_w2--;
 					czas_po_utracie_zycia_wroga = 35;
 				}
-				 
+
+				if ((((kolider_x + 83 > grunt1_x + 3300 + kolider_w3) && (kolider_x < grunt1_x + 3520 + kolider_w3))
+					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje == true))
+					|| ((strzala_x > grunt1_x + 3300 + kolider_w3) && (strzala_x + 20 < grunt1_x + 3520 + kolider_w3)
+						&& (strzala_y < grunt1_y - 42) && (strzala_y > grunt1_y - 125)
+						&& (czas_po_utracie_zycia_wroga == 0)))
+				{
+					zycie_w3--;
+					czas_po_utracie_zycia_wroga = 35;
+				}
+
+				if ((((kolider_x + 83 > grunt1_x + 5100 + kolider_w4) && (kolider_x < grunt1_x + 5320 + kolider_w4))
+					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje == true))
+					|| ((strzala_x > grunt1_x + 5100 + kolider_w4) && (strzala_x + 20 < grunt1_x + 5320 + kolider_w4)
+						&& (strzala_y < grunt1_y - 27) && (strzala_y > grunt1_y - 50)
+						&& (czas_po_utracie_zycia_wroga == 0)))
+				{
+					zycie_w4--;
+					czas_po_utracie_zycia_wroga = 35;
+				}
+
+				if ((((kolider_x + 83 > grunt1_x + 5800 + kolider_w5) && (kolider_x < grunt1_x + 6020 + kolider_w5))
+					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje == true))
+					|| ((strzala_x > grunt1_x + 5800 + kolider_w5) && (strzala_x + 20 < grunt1_x + 6020 + kolider_w5)
+						&& (strzala_y < grunt1_y - 42) && (strzala_y > grunt1_y - 35)
+						&& (czas_po_utracie_zycia_wroga == 0)))
+				{
+					zycie_w5--;
+					czas_po_utracie_zycia_wroga = 35;
+				}
+
+				if ((((kolider_x + 83 > grunt1_x + 6500 + kolider_w6) && (kolider_x < grunt1_x + 6720 + kolider_w6))
+					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje == true))
+					|| ((strzala_x > grunt1_x + 6500 + kolider_w6) && (strzala_x + 20 < grunt1_x + 6720 + kolider_w6)
+						&& (strzala_y < grunt1_y - 42) && (strzala_y > grunt1_y - 35)
+						&& (czas_po_utracie_zycia_wroga == 0)))
+				{
+					zycie_w6--;
+					czas_po_utracie_zycia_wroga = 35;
+				}
+
+
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 																		//ZACHOWANIE STRZALY
 
-				kat_strzalu = tan((mysz_y-(float)pos_y) / (mysz_x-(float)pos_x));
-
 				if (czy_strzala_leci==true)
 				{
-					if ((strzal_prawo == true)&&(naciag_x>0))
+					if (pos_x < 960)
 					{
-						strzala_x = strzala_x + (12*(naciag_x/400));
-					}
+						if ((strzal_prawo == true) && (naciag_x > 0))
+						{
+							strzala_x = strzala_x + (12 * (naciag_x / 400));
+						}
 
-					if ((strzal_lewo == true) && (naciag_x<0))
+						if ((strzal_lewo == true) && (naciag_x < 0))
+						{
+							strzala_x = strzala_x + (12 * (naciag_x / 400));
+						}
+					}
+					else
 					{
-						strzala_x = strzala_x + (3 * (naciag_x / 400));
+						if ((strzal_prawo == true) && (naciag_x > 0))
+						{
+							strzala_x = (keys[A]*5) - (keys[D] * 5) + strzala_x + (12 * (naciag_x / 400));
+						}
+						if ((strzal_prawo == true) && (naciag_x <= 0))
+						{
+							strzala_x = (keys[A] * 5) - (keys[D] * 5) + strzala_x;
+						}
+
+						if ((strzal_lewo == true) && (naciag_x < 0))
+						{
+							strzala_x = -(keys[D]*5) + (keys[A] * 5) + strzala_x + (12 * (naciag_x / 400));
+						}
+						if ((strzal_lewo == true) && (naciag_x >= 0))
+						{
+							strzala_x = -(keys[D] * 5) + (keys[A] * 5) + strzala_x;
+						}
 					}
 					
 					strzala_y = strzala_y + strzala_g + 3*(naciag_y / 400);
@@ -731,9 +826,13 @@ int main(void)
 			{
 				przerys = false;
 
+														//T£A
+
 
 				al_draw_bitmap(tlo_gl, 0 + kamera_x / 3, 0, 0);
 				al_draw_bitmap(tlo2, (0 + kamera_x * 2) / 3, 0, 0);
+
+														//ZYCIE BOHATERA
 
 				if (ilosc_zyc == 3)
 				{
@@ -752,10 +851,14 @@ int main(void)
 					al_draw_bitmap(zycie, 10, 10, 0);
 				}
 
-				al_draw_circle(pos_x, pos_y, 400, al_map_rgb(255, 0, 0), 3);
+
+				if (czy_bohater_naciaga == true)
+				{
+					al_draw_circle(pos_x, pos_y, 400, al_map_rgb(255, 0, 0), 3);
+				}
 
 			
-														//Animacje bohatera
+														//ANIMACJE BOHATERA
 
 
 				if (ostatni_ruch == 0)
@@ -882,6 +985,38 @@ int main(void)
 				{
 					czy_wrog2_martwy = true;
 				}
+				if (zycie_w3 > 0)
+				{
+					al_draw_bitmap(wrog2, grunt1_x + 3300 + kamera_x + kolider_w3, grunt1_y - 125, 0);
+				}
+				else
+				{
+					czy_wrog3_martwy = true;
+				}
+				if (zycie_w4 > 0)
+				{
+					al_draw_bitmap(wrog2, grunt1_x + 5100 + kamera_x + kolider_w4, grunt1_y - 50, 0);
+				}
+				else
+				{
+					czy_wrog4_martwy = true;
+				}
+				if (zycie_w5 > 0)
+				{
+					al_draw_bitmap(wrog2, grunt1_x + 5800 + kamera_x + kolider_w5, grunt1_y - 35, 0);
+				}
+				else
+				{
+					czy_wrog5_martwy = true;
+				}
+				if (zycie_w6 > 0)
+				{
+					al_draw_bitmap(wrog2, grunt1_x + 6500 + kamera_x + kolider_w6, grunt1_y - 35, 0);
+				}
+				else
+				{
+					czy_wrog6_martwy = true;
+				}
 
 
 													//ZYCIE PRZECIWNIKOW
@@ -893,6 +1028,7 @@ int main(void)
 				{
 					al_draw_bitmap(zycie_zielone, grunt1_x + 1000 + kamera_x + kolider_w1 - 40, grunt1_y - 120, 0);
 				}
+
 				if (zycie_w2 >= 2)
 				{
 					al_draw_bitmap(zycie_zielone, grunt1_x + 1300 + kamera_x + kolider_w2 + 40, grunt1_y - 120, 0);
@@ -902,7 +1038,45 @@ int main(void)
 					al_draw_bitmap(zycie_zielone, grunt1_x + 1300 + kamera_x + kolider_w2 - 40, grunt1_y - 120, 0);
 				}
 
-				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 50, ALLEGRO_ALIGN_LEFT, "Mysz x: %f", mysz_x);
+				if (zycie_w3 >= 2)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 3300 + kamera_x + kolider_w3 + 40, grunt1_y - 165, 0);
+				}
+				if (zycie_w3 >= 1)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 3300 + kamera_x + kolider_w3 - 40, grunt1_y - 165, 0);
+				}
+
+				if (zycie_w4 >= 2)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 5100 + kamera_x + kolider_w4 + 40, grunt1_y - 90, 0);
+				}
+				if (zycie_w4 >= 1)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 5100 + kamera_x + kolider_w4 - 40, grunt1_y - 90, 0);
+				}
+
+				if (zycie_w5 >= 2)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 5800 + kamera_x + kolider_w5 + 40, grunt1_y - 75, 0);
+				}
+				if (zycie_w5 >= 1)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 5800 + kamera_x + kolider_w5 - 40, grunt1_y - 75, 0);
+				}
+
+				if (zycie_w6 >= 2)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 6500 + kamera_x + kolider_w6 + 40, grunt1_y - 75, 0);
+				}
+				if (zycie_w6 >= 1)
+				{
+					al_draw_bitmap(zycie_zielone, grunt1_x + 6500 + kamera_x + kolider_w6 - 40, grunt1_y - 75, 0);
+				}
+
+													//WARTOSCI DO TESTOW
+
+				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 50, ALLEGRO_ALIGN_LEFT, "Grunt y: %i", grunt1_y);
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Mysz y %f", mysz_y);
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "kat strzaly: %f", kat_strzalu);
 
