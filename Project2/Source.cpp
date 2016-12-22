@@ -38,6 +38,8 @@ int main(void)
 	float naciag_x = 0;
 	float naciag_y = 0;
 
+	int korekta_przesuwania = 0;
+
 
 	int kamera_x = 0;
 
@@ -66,6 +68,7 @@ int main(void)
 	bool czy_bohater_atakuje = false;
 	bool czy_bohater_naciaga = false;
 	bool ruchAD = false;
+	bool sciana = false;
 
 	bool czy_strzala_leci = false;
 	bool strzal_lewo = false;
@@ -500,6 +503,15 @@ int main(void)
 				{
 					przycisk = kamera_x;
 
+					if (sciana == false)
+					{
+						korekta_przesuwania =  (keys[D] * 5) - (keys[A] * 5);
+					}
+					else
+					{
+						korekta_przesuwania = korekta_przesuwania;
+					}
+
 //=============================================================================================================//
 					//KOLIDERY SCIANY OD LEWEJ
 
@@ -513,6 +525,11 @@ int main(void)
 					{
 						kolider_x += keys[D] * 5;
 						kamera_x -= keys[D] * 5;
+						sciana = false;
+					}
+					else
+					{
+						sciana = true;
 					}
 
 //------------------------------------------------------------------------------------------------------------//
@@ -526,6 +543,11 @@ int main(void)
 					{
 						kamera_x += keys[A] * 5;
 						kolider_x -= keys[A] * 5;
+						sciana = false;
+					}
+					else
+					{
+						sciana = true;
 					}
 
 					//fix dwoch klawiszy
@@ -707,11 +729,16 @@ int main(void)
 					czas_po_utracie_zycia = 60;
 				}
 
+				if (pos_x < 960)
+				{
+					korekta_przesuwania = 0;
+				}
+
 					//DLA ZYCIA PRZECIWNIKOW
 
 				if (((((kolider_x + 83 > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1220 + kolider_w1))
 					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true))
-					|| ((strzala_x > grunt1_x + 1000 + kolider_w1) && (strzala_x + 20 < grunt1_x + 1220 + kolider_w1)
+					|| ((strzala_x > grunt1_x + 1000 + kolider_w1 + kamera_x) && (strzala_x + 20 < grunt1_x + 1220 + kolider_w1 + kamera_x)
 					&&(strzala_y < grunt1_y + 3) && (strzala_y > grunt1_y - 80)))
 					&& (czas_po_utracie_zycia_wroga == 0))
 				{
@@ -721,7 +748,7 @@ int main(void)
 
 				if (((((kolider_x  + 83 > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1520 + kolider_w2))
 					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje==true))
-					|| ((strzala_x > grunt1_x + 1300 + kolider_w2) && (strzala_x + 20 < grunt1_x + 1520 + kolider_w2)
+					|| ((strzala_x > grunt1_x + 1300 + kolider_w2 + kamera_x) && (strzala_x + 20 < grunt1_x + 1520 + kolider_w2 + kamera_x)
 					&& (strzala_y < grunt1_y + 3) && (strzala_y > grunt1_y - 80)))
 					&& (czas_po_utracie_zycia_wroga == 0))
 				{
@@ -731,7 +758,7 @@ int main(void)
 
 				if ((((kolider_x + 83 > grunt1_x + 3300 + kolider_w3) && (kolider_x < grunt1_x + 3520 + kolider_w3))
 					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje == true))
-					|| ((strzala_x > grunt1_x + 3300 + kolider_w3) && (strzala_x + 20 < grunt1_x + 3520 + kolider_w3)
+					|| ((strzala_x > grunt1_x + 3300 + kolider_w3 + kamera_x) && (strzala_x + 20 < grunt1_x + 3520 + kolider_w3 + kamera_x)
 						&& (strzala_y < grunt1_y - 42) && (strzala_y > grunt1_y - 125)
 						&& (czas_po_utracie_zycia_wroga == 0)))
 				{
@@ -741,8 +768,8 @@ int main(void)
 
 				if ((((kolider_x + 83 > grunt1_x + 5100 + kolider_w4) && (kolider_x < grunt1_x + 5320 + kolider_w4))
 					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje == true))
-					|| ((strzala_x > grunt1_x + 5100 + kolider_w4) && (strzala_x + 20 < grunt1_x + 5320 + kolider_w4)
-						&& (strzala_y < grunt1_y - 27) && (strzala_y > grunt1_y - 50)
+					|| ((strzala_x > grunt1_x + 5100 + kolider_w4 + kamera_x) && (strzala_x + 20 < grunt1_x + 5320 + kolider_w4 + kamera_x)
+						&& (strzala_y < grunt1_y + 33) && (strzala_y > grunt1_y - 50)
 						&& (czas_po_utracie_zycia_wroga == 0)))
 				{
 					zycie_w4--;
@@ -751,8 +778,8 @@ int main(void)
 
 				if ((((kolider_x + 83 > grunt1_x + 5800 + kolider_w5) && (kolider_x < grunt1_x + 6020 + kolider_w5))
 					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje == true))
-					|| ((strzala_x > grunt1_x + 5800 + kolider_w5) && (strzala_x + 20 < grunt1_x + 6020 + kolider_w5)
-						&& (strzala_y < grunt1_y - 42) && (strzala_y > grunt1_y - 35)
+					|| ((strzala_x > grunt1_x + 5800 + kolider_w5 + kamera_x) && (strzala_x + 20 < grunt1_x + 6020 + kolider_w5 + kamera_x)
+						&& (strzala_y < grunt1_y + 48) && (strzala_y > grunt1_y - 35)
 						&& (czas_po_utracie_zycia_wroga == 0)))
 				{
 					zycie_w5--;
@@ -761,8 +788,8 @@ int main(void)
 
 				if ((((kolider_x + 83 > grunt1_x + 6500 + kolider_w6) && (kolider_x < grunt1_x + 6720 + kolider_w6))
 					&& (czas_po_utracie_zycia_wroga == 0) && (czy_bohater_atakuje == true))
-					|| ((strzala_x > grunt1_x + 6500 + kolider_w6) && (strzala_x + 20 < grunt1_x + 6720 + kolider_w6)
-						&& (strzala_y < grunt1_y - 42) && (strzala_y > grunt1_y - 35)
+					|| ((strzala_x > grunt1_x + 6500 + kolider_w6+ kamera_x) && (strzala_x + 20 < grunt1_x + 6720 + kolider_w6 + kamera_x)
+						&& (strzala_y < grunt1_y + 48) && (strzala_y > grunt1_y - 35)
 						&& (czas_po_utracie_zycia_wroga == 0)))
 				{
 					zycie_w6--;
@@ -792,20 +819,20 @@ int main(void)
 					{
 						if ((strzal_prawo == true) && (naciag_x > 0))
 						{
-							strzala_x = (keys[A]*5) - (keys[D] * 5) + strzala_x + (12 * (naciag_x / 400));
+							strzala_x = -korekta_przesuwania + strzala_x + (12 * (naciag_x / 400));
 						}
 						if ((strzal_prawo == true) && (naciag_x <= 0))
 						{
-							strzala_x = (keys[A] * 5) - (keys[D] * 5) + strzala_x;
+							strzala_x = -korekta_przesuwania + strzala_x;
 						}
 
 						if ((strzal_lewo == true) && (naciag_x < 0))
 						{
-							strzala_x = -(keys[D]*5) + (keys[A] * 5) + strzala_x + (12 * (naciag_x / 400));
+							strzala_x = -korekta_przesuwania + strzala_x + (12 * (naciag_x / 400));
 						}
 						if ((strzal_lewo == true) && (naciag_x >= 0))
 						{
-							strzala_x = -(keys[D] * 5) + (keys[A] * 5) + strzala_x;
+							strzala_x = -korekta_przesuwania + strzala_x;
 						}
 					}
 					
@@ -1017,6 +1044,12 @@ int main(void)
 				{
 					czy_wrog6_martwy = true;
 				}
+
+
+				//------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+				//REMEDIUM KAZDEGO ZMARTWIENIA
+				al_draw_filled_rectangle(grunt1_x + 6500 + kolider_w6 + kamera_x, grunt1_y - 42,grunt1_x + 6720 + kolider_w6 + kamera_x, grunt1_y + 3, al_map_rgb(255, 0, 0));
+				//------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 
 													//ZYCIE PRZECIWNIKOW
