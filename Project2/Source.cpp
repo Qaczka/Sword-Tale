@@ -40,7 +40,6 @@ int main(void)
 
 	int korekta_przesuwania = 0;
 
-
 	int kamera_x = 0;
 
 	int czas_po_utracie_zycia = 60;
@@ -70,6 +69,9 @@ int main(void)
 	bool ruchAD = false;
 	bool sciana = false;
 
+	bool amunicja1 = true;
+	bool amunicja2 = true;
+
 	bool czy_strzala_leci = false;
 	bool strzal_lewo = false;
 	bool strzal_prawo = false;
@@ -89,6 +91,7 @@ int main(void)
 	int kolider_w6 = 0;
 
 	int ilosc_zyc = 3;
+	int ilosc_strzal = 3;
 
 	int zycie_w1 = 2;
 	int zycie_w2 = 2;
@@ -159,6 +162,7 @@ int main(void)
 
 
 	ALLEGRO_FONT *font18 = al_load_ttf_font("verdana.ttf", 18, 0);
+	ALLEGRO_FONT *font32 = al_load_ttf_font("verdana.ttf", 32, 0);
 
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -310,8 +314,9 @@ int main(void)
 					break;
 
 				case ALLEGRO_KEY_E:
-					if ((czy_bohater_spada == false) && (czy_bohater_wzlatuje==false))
+					if ((czy_bohater_spada == false) && (czy_bohater_wzlatuje==false) && (ilosc_strzal>0))
 					{
+						ilosc_strzal--;
 						keys[E] = true;
 						czy_bohater_naciaga = true;
 						if (ostatni_ruch == 0)
@@ -859,6 +864,8 @@ int main(void)
 				al_draw_bitmap(tlo_gl, 0 + kamera_x / 3, 0, 0);
 				al_draw_bitmap(tlo2, (0 + kamera_x * 2) / 3, 0, 0);
 
+
+//=================================================================================================//
 														//ZYCIE BOHATERA
 
 				if (ilosc_zyc == 3)
@@ -878,13 +885,21 @@ int main(void)
 					al_draw_bitmap(zycie, 10, 10, 0);
 				}
 
+//=================================================================================================//
+														//ILOSC STRZAL
+
+					al_draw_bitmap(zycie, 1750, 10, 0);
+
+					al_draw_textf(font32, al_map_rgb(255, 0, 0), 1840, 20, 0, "x %i", ilosc_strzal);
+
+
 
 				if (czy_bohater_naciaga == true)
 				{
 					al_draw_circle(pos_x, pos_y, 400, al_map_rgb(255, 0, 0), 3);
 				}
 
-			
+//=================================================================================================//
 														//ANIMACJE BOHATERA
 
 
@@ -1114,7 +1129,7 @@ int main(void)
 				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "kat strzaly: %f", kat_strzalu);
 
 				al_draw_textf(font18, al_map_rgb(200, 0, 255), 150, 150, ALLEGRO_ALIGN_LEFT, "Naciag x to: %i", naciag_x);
-				al_draw_textf(font18, al_map_rgb(255, 0, 0), 1700, 50, 0, "Kolider x to: %i", kolider_x);
+				al_draw_textf(font18, al_map_rgb(255, 0, 0), 1500, 50, 0, "Kolider x to: %i", kolider_x);
 
 
 
