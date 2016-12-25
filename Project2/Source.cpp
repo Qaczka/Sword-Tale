@@ -75,6 +75,9 @@ int main(void)
 	bool czy_strzala_leci = false;
 	bool strzal_lewo = false;
 	bool strzal_prawo = false;
+	//
+	bool strzala1_zebrana = false;
+	bool serce1_zebrane = false;
 
 
 	bool sciezka_w1 = false;
@@ -159,6 +162,7 @@ int main(void)
 	ALLEGRO_BITMAP *zycie_zielone = NULL;
 	ALLEGRO_BITMAP *zycie_czerwone = NULL;
 	ALLEGRO_BITMAP *naciag = NULL;
+	ALLEGRO_BITMAP *strzala_zbieranie = NULL;
 
 
 	ALLEGRO_FONT *font18 = al_load_ttf_font("verdana.ttf", 18, 0);
@@ -203,6 +207,7 @@ int main(void)
 	skok_dol = al_load_bitmap("skok_dol.png");
 	strzala = al_load_bitmap("strzala.png");
 	naciag = al_load_bitmap("naciag.png");
+	strzala_zbieranie = al_load_bitmap("strzala_zbieranie.png");
 
 	smierc2 = al_load_bitmap("tytul_smierc.png");
 
@@ -844,6 +849,24 @@ int main(void)
 					strzala_y = strzala_y + strzala_g + 3*(naciag_y / 400);
 				}
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+																		//KOLIDERY ZNAJDZIEK
+
+				if (((kolider_x + 83 > grunt1_x + 2800) && (kolider_x < grunt1_x + 2860) 
+					&& (pos_y+15+66 > grunt1_y - 70) && (pos_y+15 < grunt1_y))
+					&&(strzala1_zebrana==false))
+				{
+					ilosc_strzal++;
+					strzala1_zebrana = true;
+				}
+
+				if (((kolider_x + 83 > grunt1_x + 4300) && (kolider_x < grunt1_x + 4380)
+					&& (pos_y + 15 + 66 > grunt1_y - 70 + 45) && (pos_y + 15 < grunt1_y + 45))
+					&& (serce1_zebrane == false)&&(ilosc_zyc<3)&&(ilosc_zyc>=0))
+				{
+					ilosc_zyc++;
+					serce1_zebrane = true;
+				}
 
 
 				przerys = true;//ROBI ZA WZNOWIENIE CZASU
@@ -1120,6 +1143,19 @@ int main(void)
 				if (zycie_w6 >= 1)
 				{
 					al_draw_bitmap(zycie_zielone, grunt1_x + 6500 + kamera_x + kolider_w6 - 40, grunt1_y - 75, 0);
+				}
+
+													//WYSWIETLANIE ZYC/STRZAL DO ZBIERANIA  strzala(70x60)
+//=================================================================================================================================================//
+
+				if (strzala1_zebrana == false)
+				{
+					al_draw_bitmap(strzala_zbieranie, grunt1_x + kamera_x + 2800, grunt1_y - 70, 0);//unosi sie nad zimia ~ 8 pikseli
+				}
+
+				if (serce1_zebrane == false)
+				{
+					al_draw_bitmap(zycie, grunt1_x + kamera_x + 4300, grunt1_y - 70 + 45, 0);
 				}
 
 													//WARTOSCI DO TESTOW
