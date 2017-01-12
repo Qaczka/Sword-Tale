@@ -207,7 +207,7 @@ int main(void)
 	skok_dol = al_load_bitmap("skok_dol.png");
 	strzala = al_load_bitmap("strzala.png");
 	naciag = al_load_bitmap("naciag.png");
-	strzala_zbieranie = al_load_bitmap("strzala_zbieranie.png");
+	strzala_zbieranie = al_load_bitmap("strzala_ikona.png");
 
 	smierc2 = al_load_bitmap("tytul_smierc.png");
 
@@ -911,7 +911,7 @@ int main(void)
 //=================================================================================================//
 														//ILOSC STRZAL
 
-					al_draw_bitmap(zycie, 1750, 10, 0);
+					al_draw_bitmap(strzala_zbieranie, 1750, 10, 0);
 
 					al_draw_textf(font32, al_map_rgb(255, 0, 0), 1840, 20, 0, "x %i", ilosc_strzal);
 
@@ -1206,10 +1206,22 @@ int main(void)
 					keys[A] = false;
 					ostatni_ruch = 0;
 					ilosc_zyc = 3;
+
+					ilosc_strzal = 3;
+
 					zycie_w1 = 2;
 					zycie_w2 = 2;
+					zycie_w3 = 2;
+					zycie_w4 = 2;
+					zycie_w5 = 2;
+					zycie_w6 = 2;
+
 					czy_wrog1_martwy = false;
 					czy_wrog2_martwy = false;
+					czy_wrog3_martwy = false;
+					czy_wrog4_martwy = false;
+					czy_wrog5_martwy = false;
+					czy_wrog6_martwy = false;
 					break;
 				}
 			}
