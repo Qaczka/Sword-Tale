@@ -163,6 +163,8 @@ int main(void)
 	ALLEGRO_BITMAP *zycie_czerwone = NULL;
 	ALLEGRO_BITMAP *naciag = NULL;
 	ALLEGRO_BITMAP *strzala_zbieranie = NULL;
+	ALLEGRO_BITMAP *domek_przod = NULL;
+	ALLEGRO_BITMAP *domek_tyl = NULL;
 
 
 	ALLEGRO_FONT *font18 = al_load_ttf_font("verdana.ttf", 18, 0);
@@ -208,6 +210,8 @@ int main(void)
 	strzala = al_load_bitmap("strzala.png");
 	naciag = al_load_bitmap("naciag.png");
 	strzala_zbieranie = al_load_bitmap("strzala_ikona.png");
+	domek_przod = al_load_bitmap("domek_przod.png");
+	domek_tyl = al_load_bitmap("domek_tyl.png");
 
 	smierc2 = al_load_bitmap("tytul_smierc.png");
 
@@ -886,6 +890,8 @@ int main(void)
 
 				al_draw_bitmap(tlo_gl, 0 + kamera_x / 3, 0, 0);
 				al_draw_bitmap(tlo2, (0 + kamera_x * 2) / 3, 0, 0);
+				al_draw_bitmap(domek_tyl, grunt1_x + 6900 + kamera_x, grunt1_y + 45 - 400, 0);
+
 
 
 //=================================================================================================//
@@ -1027,7 +1033,7 @@ int main(void)
 				al_draw_bitmap(grunt1, grunt1_x + 7465 + kamera_x, grunt1_y + 20, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 8260 + kamera_x, grunt1_y + 0, 0);
 
-
+				al_draw_bitmap(domek_przod, grunt1_x + 7015 + kamera_x, grunt1_y + 45-400, 0);
 
 		
 
