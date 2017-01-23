@@ -69,6 +69,8 @@ int main(void)
 	bool ruchAD = false;
 	bool sciana = false;
 
+	bool wygrana = false;
+
 	bool amunicja1 = true;
 	bool amunicja2 = true;
 
@@ -82,6 +84,11 @@ int main(void)
 
 	bool sciezka_w1 = false;
 	bool sciezka_w2 = false;
+	bool sciezka_w3 = false;
+	bool sciezka_w4 = false;
+	bool sciezka_w5 = false;
+	bool sciezka_w6 = false;
+
 
 	int pos_x = 10;
 	int pos_y = (wysokosc*3)/4;
@@ -120,8 +127,8 @@ int main(void)
 	int grunt1_x = 0;
 	int grunt1_y = pos_y + 80;
 
-	int strzala_x=0;
-	int strzala_y=0;
+	int strzala_x=-100;
+	int strzala_y=-100;
 	int strzala_g = 0;
 
 
@@ -165,6 +172,8 @@ int main(void)
 	ALLEGRO_BITMAP *strzala_zbieranie = NULL;
 	ALLEGRO_BITMAP *domek_przod = NULL;
 	ALLEGRO_BITMAP *domek_tyl = NULL;
+	ALLEGRO_BITMAP *wygr = NULL;
+
 
 
 	ALLEGRO_FONT *font18 = al_load_ttf_font("verdana.ttf", 18, 0);
@@ -214,6 +223,8 @@ int main(void)
 	domek_tyl = al_load_bitmap("domek_tyl.png");
 
 	smierc2 = al_load_bitmap("tytul_smierc.png");
+	wygr = al_load_bitmap("wygrana.png");
+
 
 
 
@@ -294,7 +305,7 @@ int main(void)
 	while (!smierc)
 	{
 
-		while (!done)
+		while (!done&&!wygrana)
 		{
 			ALLEGRO_EVENT ev;
 			al_wait_for_event(event_queue, &ev);
@@ -440,7 +451,10 @@ int main(void)
 
 			else if (ev.type == ALLEGRO_EVENT_TIMER)
 			{
-
+				if (kolider_x == 7200)
+				{
+					wygrana = true;
+				}
 
 				if ((pos_y - 66 > 1080) || (ilosc_zyc == -1))
 				{
@@ -479,6 +493,40 @@ int main(void)
 					if (kolider_w2 == 0)
 					{
 						sciezka_w2 = false;
+					}
+				}
+
+				if (sciezka_w5 == false)
+				{
+					kolider_w5 += 1;
+					if (kolider_w5 == 60)
+					{
+						sciezka_w5 = true;
+					}
+				}
+				else
+				{
+					kolider_w5 -= 1;
+					if (kolider_w5 == 0)
+					{
+						sciezka_w5 = false;
+					}
+				}
+
+				if (sciezka_w6 == false)
+				{
+					kolider_w6 += 1;
+					if (kolider_w6 == 60)
+					{
+						sciezka_w6 = true;
+					}
+				}
+				else
+				{
+					kolider_w6 -= 1;
+					if (kolider_w6 == 0)
+					{
+						sciezka_w6 = false;
 					}
 				}
 				przycisk = pos_x;
@@ -731,12 +779,12 @@ int main(void)
 					//DLA ZYCIA BOHATERA
 
 
-				if ((((kolider_x > grunt1_x + 1000 + kolider_w1) && (kolider_x < grunt1_x + 1220 + kolider_w1)&&(czy_wrog1_martwy!=true)) 
-					|| ((kolider_x > grunt1_x + 1300 + kolider_w2) && (kolider_x < grunt1_x + 1520 + kolider_w2) && (czy_wrog2_martwy != true))
-					|| ((kolider_x > grunt1_x + 3300 + kolider_w3) && (kolider_x < grunt1_x + 3520 + kolider_w3) && (czy_wrog3_martwy != true))
-					|| ((kolider_x > grunt1_x + 5100 + kolider_w4) && (kolider_x < grunt1_x + 5320 + kolider_w4) && (czy_wrog4_martwy != true))
-					|| ((kolider_x > grunt1_x + 5800 + kolider_w5) && (kolider_x < grunt1_x + 6020 + kolider_w5) && (czy_wrog5_martwy != true))
-					|| ((kolider_x > grunt1_x + 6500 + kolider_w6) && (kolider_x < grunt1_x + 6720 + kolider_w6) && (czy_wrog6_martwy != true)))
+				if ((((kolider_x > grunt1_x + 1000 + kolider_w1-82) && (kolider_x < grunt1_x + 1220 + kolider_w1)&&(czy_wrog1_martwy!=true)) 
+					|| ((kolider_x > grunt1_x + 1300 + kolider_w2 - 82) && (kolider_x < grunt1_x + 1520 + kolider_w2) && (czy_wrog2_martwy != true))
+					|| ((kolider_x > grunt1_x + 3300 + kolider_w3 - 82) && (kolider_x < grunt1_x + 3520 + kolider_w3) && (czy_wrog3_martwy != true))
+					|| ((kolider_x > grunt1_x + 5100 + kolider_w4 - 82) && (kolider_x < grunt1_x + 5320 + kolider_w4) && (czy_wrog4_martwy != true))
+					|| ((kolider_x > grunt1_x + 5800 + kolider_w5 - 82) && (kolider_x < grunt1_x + 6020 + kolider_w5) && (czy_wrog5_martwy != true))
+					|| ((kolider_x > grunt1_x + 6500 + kolider_w6 - 82) && (kolider_x < grunt1_x + 6720 + kolider_w6) && (czy_wrog6_martwy != true)))
 					&& (czas_po_utracie_zycia == 0)&&(czy_bohater_atakuje==false))
 				{
 					ilosc_zyc -= 1;
@@ -1028,9 +1076,10 @@ int main(void)
 				al_draw_bitmap(grunt1, grunt1_x + 4925 + kamera_x, grunt1_y + 30, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 5720 + kamera_x, grunt1_y + 45, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 6515 + kamera_x, grunt1_y + 45, 0);
+				al_draw_bitmap(grunt1, grunt1_x + 6715 + kamera_x, grunt1_y + 45, 0);
 
 				//wyrwa na 205
-				al_draw_bitmap(grunt1, grunt1_x + 7465 + kamera_x, grunt1_y + 20, 0);
+				//al_draw_bitmap(grunt1, grunt1_x + 7465 + kamera_x, grunt1_y + 20, 0);
 				al_draw_bitmap(grunt1, grunt1_x + 8260 + kamera_x, grunt1_y + 0, 0);
 
 				al_draw_bitmap(domek_przod, grunt1_x + 7015 + kamera_x, grunt1_y + 45-400, 0);
@@ -1092,7 +1141,7 @@ int main(void)
 
 				//------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 				//REMEDIUM KAZDEGO ZMARTWIENIA
-				al_draw_filled_rectangle(grunt1_x + 6500 + kolider_w6 + kamera_x, grunt1_y - 42,grunt1_x + 6720 + kolider_w6 + kamera_x, grunt1_y + 3, al_map_rgb(255, 0, 0));
+				//al_draw_filled_rectangle(grunt1_x + 6500 + kolider_w6 + kamera_x, grunt1_y - 42,grunt1_x + 6720 + kolider_w6 + kamera_x, grunt1_y + 3, al_map_rgb(255, 0, 0));
 				//------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -1166,12 +1215,12 @@ int main(void)
 
 													//WARTOSCI DO TESTOW
 
-				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 50, ALLEGRO_ALIGN_LEFT, "Grunt y: %i", grunt1_y);
-				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Mysz y %f", mysz_y);
-				al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "kat strzaly: %f", kat_strzalu);
+				//al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 50, ALLEGRO_ALIGN_LEFT, "Grunt y: %i", grunt1_y);
+				//al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 150, ALLEGRO_ALIGN_LEFT, "Mysz y %f", mysz_y);
+				//al_draw_textf(font18, al_map_rgb(50, 0, 255), 350, 250, ALLEGRO_ALIGN_LEFT, "kat strzaly: %f", kat_strzalu);
 
-				al_draw_textf(font18, al_map_rgb(200, 0, 255), 150, 150, ALLEGRO_ALIGN_LEFT, "Naciag x to: %i", naciag_x);
-				al_draw_textf(font18, al_map_rgb(255, 0, 0), 1500, 50, 0, "Kolider x to: %i", kolider_x);
+				//al_draw_textf(font18, al_map_rgb(200, 0, 255), 150, 150, ALLEGRO_ALIGN_LEFT, "Naciag x to: %i", naciag_x);
+				//al_draw_textf(font18, al_map_rgb(255, 0, 0), 1500, 50, 0, "Kolider x to: %i", kolider_x);
 
 
 
@@ -1191,7 +1240,8 @@ int main(void)
 
 	
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-																		//EKRAN SMIERCI I RESET WARTOSCI
+		if (wygrana == false) {
+			//EKRAN SMIERCI I RESET WARTOSCI
 			ALLEGRO_EVENT smierc1;
 			al_wait_for_event(event_queue, &smierc1);
 
@@ -1233,7 +1283,26 @@ int main(void)
 			}
 
 
-				al_draw_bitmap(smierc2, 0, 0, 0);
+			al_draw_bitmap(smierc2, 0, 0, 0);
+		}
+		else
+		{
+			ALLEGRO_EVENT zwyciestwo;
+			al_wait_for_event(event_queue, &zwyciestwo);
+
+			if (zwyciestwo.type == ALLEGRO_EVENT_KEY_UP)//esc wylacza okno
+			{
+				switch (zwyciestwo.keyboard.keycode)
+				{
+				case ALLEGRO_KEY_ESCAPE:
+					smierc = true;
+					break;
+				}
+			}
+
+			
+				al_draw_bitmap(wygr, 0, 0, 0);
+		}
 			
 
 			
