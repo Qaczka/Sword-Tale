@@ -50,6 +50,7 @@ int main(void)
 	int zegarek_animacja_boh = 0;
 	int zegarek_atak = 0;
 	int zegarek_strzala = 0;
+	int zegarek_bezczynnosc = 0;
 
 	int grawitacja = 15;
 	int przycisk = 0;
@@ -145,6 +146,12 @@ int main(void)
 	ALLEGRO_TIMER *timer = NULL;
 
 	ALLEGRO_BITMAP *bohater = NULL;
+
+	ALLEGRO_BITMAP *bohater1 = NULL;
+	ALLEGRO_BITMAP *bohater2 = NULL;
+	ALLEGRO_BITMAP *bohater3 = NULL;
+
+
 	ALLEGRO_BITMAP *ruch_boh1 = NULL;
 	ALLEGRO_BITMAP *ruch_boh2 = NULL;
 	ALLEGRO_BITMAP *atak = NULL;
@@ -224,6 +231,11 @@ int main(void)
 
 	smierc2 = al_load_bitmap("tytul_smierc.png");
 	wygr = al_load_bitmap("wygrana.png");
+
+	bohater1 = al_load_bitmap("bez1.png");
+	bohater2 = al_load_bitmap("bez2.png");
+	bohater3 = al_load_bitmap("bez3.png");
+
 
 
 
@@ -737,6 +749,12 @@ int main(void)
 					zegarek_animacja_boh = 0;
 				}
 
+				zegarek_bezczynnosc++;
+				if (zegarek_bezczynnosc == 150)
+				{
+					zegarek_bezczynnosc = 0;
+				}
+
 				if (czy_bohater_atakuje == true)
 				{
 					zegarek_atak++;
@@ -984,7 +1002,18 @@ int main(void)
 				{
 					if (((keys[A] == true) && (keys[D] == true)) && (skok != true))
 					{
-						al_draw_bitmap(bohater, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						if (zegarek_bezczynnosc < 50)
+						{
+							al_draw_bitmap(bohater1, pos_x, pos_y + 15, 0);
+						}
+						if (zegarek_bezczynnosc >= 50 && zegarek_bezczynnosc<100)
+						{
+							al_draw_bitmap(bohater2, pos_x, pos_y + 15, 0);
+						}
+						if (zegarek_bezczynnosc >= 100)
+						{
+							al_draw_bitmap(bohater3, pos_x, pos_y + 15, 0);
+						}
 						ruchAD = true;
 					}
 					if (((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true)) && (ruchAD == false))
@@ -1000,7 +1029,18 @@ int main(void)
 
 					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true)&&(czy_bohater_naciaga==false))
 					{
-						al_draw_bitmap(bohater, pos_x, pos_y + 15, 0);
+						if (zegarek_bezczynnosc < 50)
+						{
+							al_draw_bitmap(bohater1, pos_x, pos_y + 15, 0);
+						}
+						if (zegarek_bezczynnosc >= 50 && zegarek_bezczynnosc<100)
+						{
+							al_draw_bitmap(bohater2, pos_x, pos_y + 15, 0);
+						}
+						if (zegarek_bezczynnosc >= 100)
+						{
+							al_draw_bitmap(bohater3, pos_x, pos_y + 15, 0);
+						}
 					}
 					if ((czy_bohater_wzlatuje == true) && (czy_bohater_atakuje != true))
 					{
@@ -1023,7 +1063,18 @@ int main(void)
 				{
 					if (((keys[A] == true) && (keys[D] == true))&&(skok!=true))
 					{
-						al_draw_bitmap(bohater, pos_x, pos_y + 15, 0);
+						if (zegarek_bezczynnosc < 50)
+						{
+							al_draw_bitmap(bohater1, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
+						if (zegarek_bezczynnosc >= 50 && zegarek_bezczynnosc<100)
+						{
+							al_draw_bitmap(bohater2, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
+						if (zegarek_bezczynnosc >= 100)
+						{
+							al_draw_bitmap(bohater3, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
 						ruchAD = true;
 					}
 					if (((zegarek_animacja_boh >= 0) && (zegarek_animacja_boh < 25) && (czy_bohater_biegnie == true) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true)&&(czy_bohater_atakuje!=true)) && (ruchAD == false))
@@ -1039,7 +1090,18 @@ int main(void)
 
 					if((czy_bohater_biegnie==false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true) && (czy_bohater_naciaga==false))
 					{
-						al_draw_bitmap(bohater, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						if (zegarek_bezczynnosc < 50)
+						{
+							al_draw_bitmap(bohater1, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
+						if (zegarek_bezczynnosc >= 50&&zegarek_bezczynnosc<100)
+						{
+							al_draw_bitmap(bohater2, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
+						if (zegarek_bezczynnosc >= 100)
+						{
+							al_draw_bitmap(bohater3, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
 					}
 					if ((czy_bohater_wzlatuje == true) && (czy_bohater_atakuje != true))
 					{
