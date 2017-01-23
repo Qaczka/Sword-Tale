@@ -155,6 +155,10 @@ int main(void)
 	ALLEGRO_BITMAP *ruch_boh1 = NULL;
 	ALLEGRO_BITMAP *ruch_boh2 = NULL;
 	ALLEGRO_BITMAP *atak = NULL;
+	ALLEGRO_BITMAP *atak1 = NULL;
+	ALLEGRO_BITMAP *atak2 = NULL;
+	ALLEGRO_BITMAP *atak3 = NULL;
+
 	ALLEGRO_BITMAP *skok_gora = NULL;
 	ALLEGRO_BITMAP *skok_dol = NULL;
 
@@ -221,6 +225,10 @@ int main(void)
 	ruch_boh1 = al_load_bitmap("ruch1.png");
 	ruch_boh2 = al_load_bitmap("ruch2.png");
 	atak = al_load_bitmap("atak.png");
+	atak1 = al_load_bitmap("atak1.png");
+	atak2 = al_load_bitmap("atak2.png");
+	atak3 = al_load_bitmap("atak3.png");
+
 	skok_gora = al_load_bitmap("skok_gora.png");
 	skok_dol = al_load_bitmap("skok_dol.png");
 	strzala = al_load_bitmap("strzala.png");
@@ -1052,7 +1060,18 @@ int main(void)
 					}
 					if (czy_bohater_atakuje == true)
 					{
-						al_draw_bitmap(atak, pos_x, pos_y + 15, 0);
+						if (zegarek_atak < 20)
+						{
+							al_draw_bitmap(atak1, pos_x, pos_y + 15, 0);
+						}
+						if (zegarek_atak >= 20 && zegarek_atak < 40)
+						{
+							al_draw_bitmap(atak2, pos_x, pos_y + 15, 0);
+						}
+						if (zegarek_atak >= 40)
+						{
+							al_draw_bitmap(atak3, pos_x, pos_y + 15, 0);
+						}
 					}
 					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true) && (czy_bohater_naciaga == true))
 					{
@@ -1113,7 +1132,18 @@ int main(void)
 					}
 					if (czy_bohater_atakuje == true)
 					{
-						al_draw_bitmap(atak, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						if (zegarek_atak < 20)
+						{
+							al_draw_bitmap(atak1, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
+						if (zegarek_atak >= 20 && zegarek_atak < 40)
+						{
+							al_draw_bitmap(atak2, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
+						if (zegarek_atak >= 40)
+						{
+							al_draw_bitmap(atak3, pos_x, pos_y + 15, ALLEGRO_FLIP_HORIZONTAL);
+						}
 					}
 					if ((czy_bohater_biegnie == false) && (czy_bohater_spada != true) && (czy_bohater_wzlatuje != true) && (czy_bohater_atakuje != true) && (czy_bohater_naciaga == true))
 					{
@@ -1374,13 +1404,44 @@ int main(void)
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 																		//CZYSZCZENIE
 
-		al_destroy_display(okno);
+		
+	
 		al_destroy_bitmap(bohater);
 		al_destroy_bitmap(grunt1);
 		al_destroy_bitmap(wrog1);
 		al_destroy_bitmap(wrog2);
-		al_destroy_bitmap(tlo2);
 		al_destroy_bitmap(tlo_gl);
+		al_destroy_bitmap(tlo2);
+		al_destroy_bitmap(zycie);
+		al_destroy_bitmap(tytul);
+		al_destroy_bitmap(tytul1);
+		al_destroy_bitmap(tytul2);
+		al_destroy_bitmap(tytul3);
+		al_destroy_bitmap(zycie_zielone);
+		al_destroy_bitmap(zycie_czerwone);
+		al_destroy_bitmap(ruch_boh1);
+		al_destroy_bitmap(ruch_boh2);
+		al_destroy_bitmap(atak);
+		al_destroy_bitmap(atak1);
+		al_destroy_bitmap(atak2);
+		al_destroy_bitmap(atak3);
+
+		skok_gora = al_load_bitmap("skok_gora.png");
+		skok_dol = al_load_bitmap("skok_dol.png");
+		strzala = al_load_bitmap("strzala.png");
+		naciag = al_load_bitmap("naciag.png");
+		strzala_zbieranie = al_load_bitmap("strzala_ikona.png");
+		domek_przod = al_load_bitmap("domek_przod.png");
+		domek_tyl = al_load_bitmap("domek_tyl.png");
+
+		smierc2 = al_load_bitmap("tytul_smierc.png");
+		wygr = al_load_bitmap("wygrana.png");
+
+		bohater1 = al_load_bitmap("bez1.png");
+		bohater2 = al_load_bitmap("bez2.png");
+		bohater3 = al_load_bitmap("bez3.png");
+
+
 		al_destroy_timer(timer);
 		al_destroy_event_queue(event_queue);
 
